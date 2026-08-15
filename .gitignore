@@ -1,0 +1,9 @@
+build/
+
+# Build configuration
+sdkconfig
+
+# IDE
+.settings/
+.cproject
+.project
