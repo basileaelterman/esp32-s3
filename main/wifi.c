@@ -22,9 +22,9 @@
 // FreeRTOS even group to signal when we are connected
 static EventGroupHandle_t s_wifi_event_group;
 
-/* The event group allows multiple bits for each event, but we only care about two events:
- * - we are connected to the Access Point with and IP
- * - we failed to connect after the maximum amount of retries */
+// The event group allows multiple bits for each event, but we only care about two events:
+// - we are connected to the Access Point with and IP
+// - we failed to connect after the maximum amount of retries
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAILED_BIT    BIT1
  
@@ -91,16 +91,16 @@ void wifi_init_sta(void)
 	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
 	ESP_ERROR_CHECK(esp_wifi_start());
 	
-	/* Wait until either a connection is established (WIFI_CONNECTED_BIT) or still hasn't connected
-	 * after the maximum amount of re-tries (WIFI_FAILED_BIT. The bits are set by event_handler(). */
+	// Wait until either a connection is established (WIFI_CONNECTED_BIT) or still hasn't connected
+	// after the maximum amount of re-tries (WIFI_FAILED_BIT. The bits are set by event_handler().
 	EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
 										   WIFI_CONNECTED_BIT | WIFI_FAILED_BIT,
 									   	   pdFALSE,
 									   	   pdFALSE,
 									   	   portMAX_DELAY);
 										   
-	/* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which 
-	 * event actually happend. */
+	// xEventGroupWaitBits() returns the bits before the call returned, hence we can test which 
+	// event actually happend.
 	if (bits & WIFI_CONNECTED_BIT) {
 		ESP_LOGI(TAG, "Connected to access point with SSID: %s and password: %s",
 				 WIFI_SSID, WIFI_PASSWORD);
