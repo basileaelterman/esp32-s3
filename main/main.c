@@ -1,9 +1,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
-#include "freertos/idf_additions.h"
 #include "nvs.h"
 #include "nvs_flash.h"
-#include "sdkconfig.h"
 #include "wifi.h"
 #include "nvs.h"
 
@@ -20,10 +18,6 @@ void app_main(void)
 	}
 	
 	ESP_ERROR_CHECK(nvs_status);
-	
-	if (CONFIG_LOG_MAXIMUM_LEVEL > CONFIG_LOG_DEFAULT_LEVEL) {
-		esp_log_level_set("wifi", CONFIG_LOG_MAXIMUM_LEVEL);
-	}
 	
 	// Establish Wi-Fi connection
 	esp_err_t wifi_status = wifi_init_sta();

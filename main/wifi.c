@@ -3,17 +3,9 @@
 #include "esp_event_base.h"
 #include "esp_netif_types.h"
 #include "esp_wifi_types_generic.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/event_groups.h"
-#include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
-#include "nvs_flash.h"
-
-#include "lwip/err.h"
-#include "lwip/sys.h"
 
 #define WIFI_SSID       CONFIG_ESP_WIFI_SSID
 #define WIFI_PASSWORD   CONFIG_ESP_WIFI_PASSWORD
