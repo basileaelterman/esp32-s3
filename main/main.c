@@ -2,6 +2,7 @@
 #include "esp_log.h"
 #include "nvs.h"
 #include "nvs_flash.h"
+#include "telemetry.h"
 #include "wifi.h"
 #include "nvs.h"
 
@@ -29,6 +30,5 @@ void app_main(void)
 	}
 	
 	// Run telemetry tasks
-	// xTaskCreate(telemetry_task, "telemetry_task", 4096, NULL, 60, NULL);
-	// xTaskCreate(telemetry_sync_task, "telemetry_sync_task", 4096, NULL, 60, NULL);
+	ESP_ERROR_CHECK(telemetry_init());
 }
