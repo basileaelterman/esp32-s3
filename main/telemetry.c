@@ -1,3 +1,4 @@
+#include "cJSON.h"
 #include "telemetry.h"
 #include "esp_err.h"
 #include "esp_http_client.h"
@@ -28,18 +29,34 @@ static void telemetry_backoff(int attempt) {
 }
 
 static esp_err_t telemetry_send_batch(const telemetry_reading_t *batch) {
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddNumberToObject(root, "timestamp", 1787253656);
+    cJSON_AddNumberToObject(root, "uptime", 3401);
+    cJSON_AddStringToObject(root, "sensor_id", "ad334ccf-c1d5-44a0-a908-e0bbdf5ae7d2");
+
+    char *json = cJSON_PrintUnformatted(root);
+
+    // Prepare and send to the API
     esp_http_client_config_t config = {
-		.host = HTTP_HOST,
-        .path = HTTP_PATH,
-		.method = HTTP_METHOD_GET,
-		.transport_type = HTTP_TRANSPORT_OVER_SSL,
+		.url = "http://dev.basileaelterman.com/",
+		.method = HTTP_METHOD_POST,
 	};
 	
 	esp_http_client_handle_t client = esp_http_client_init(&config);
     esp_http_client_set_header(client, "Content-Type", "application/json");
-    //esp_http_client_set_post_field();
+    esp_http_client_set_post_field(client, json, strlen(json));
 
     esp_err_t response_status = esp_http_client_perform(client);
+
+    if (response_status == ESP_OK) {
+        ESP_LOGI(TAG, "Successfully sent data to host");
+    } else {
+        ESP_LOGE(TAG, "Failed to send data to host");
+    }
+
+    cJSON_free(json);
+    cJSON_Delete(root);
+
     esp_http_client_cleanup(client);
     
     return response_status;
@@ -47,16 +64,11 @@ static esp_err_t telemetry_send_batch(const telemetry_reading_t *batch) {
 
 static void telemetry_task(void *arg) {
 	while (1) {
-        // Sleep until there's a Wi-Fi connection
         wifi_wait_for_connection(portMAX_DELAY);
 		
         // Wait for a telemetry reading to be available in the queue
 		telemetry_reading_t reading;
-		BaseType_t is_received = xQueueReceive(s_queue, &reading, portMAX_DELAY);
-
-		if (is_received != pdTRUE) {
-            continue;
-		}
+		xQueueReceive(s_queue, &reading, portMAX_DELAY);
 
         // Attempt to send the telemetry readings to the server
         int attempts = 0;
@@ -69,9 +81,6 @@ static void telemetry_task(void *arg) {
             telemetry_backoff(attempts);
             attempts++;
         }
-
-        // All attempts failed, log the error.
-        ESP_LOGE(TAG, "Failed to send telemetry readings after %d attempts.", MAXIMUM_RETRY_ATTEMPTS);
     }
 }
 
