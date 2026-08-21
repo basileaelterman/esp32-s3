@@ -28,17 +28,18 @@ static void telemetry_backoff(int attempt) {
     vTaskDelay(pdMS_TO_TICKS(wait));
 }
 
-static esp_err_t telemetry_send_batch(const telemetry_reading_t *batch) {
+static esp_err_t telemetry_send_batch(const telemetry_reading_t *reading) {
     cJSON *root = cJSON_CreateObject();
-    cJSON_AddNumberToObject(root, "timestamp", 1787253656);
-    cJSON_AddNumberToObject(root, "uptime", 3401);
-    cJSON_AddStringToObject(root, "sensor_id", "ad334ccf-c1d5-44a0-a908-e0bbdf5ae7d2");
+    cJSON_AddNumberToObject(root, "timestamp", reading->timestamp);
+    cJSON_AddNumberToObject(root, "uptime", reading->uptime);
+    cJSON_AddStringToObject(root, "sensor_id", reading->sensor_id);
 
     char *json = cJSON_PrintUnformatted(root);
 
     // Prepare and send to the API
     esp_http_client_config_t config = {
-		.url = "http://dev.basileaelterman.com/",
+		.host = HTTP_HOST,
+        .path = HTTP_PATH,
 		.method = HTTP_METHOD_POST,
 	};
 	
