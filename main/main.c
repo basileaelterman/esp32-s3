@@ -5,6 +5,7 @@
 #include "telemetry.h"
 #include "wifi.h"
 #include "nvs.h"
+#include "sntp.h"
 
 static const char *TAG = "app";
 
@@ -28,6 +29,9 @@ void app_main(void)
 	} else {
 		ESP_LOGW(TAG, "Boot Wi-Fi connection failed. Starting in OFFLINE mode...");
 	}
+	
+	// Initialize system time
+	ESP_ERROR_CHECK(sntp_init());
 	
 	// Run telemetry tasks
 	ESP_ERROR_CHECK(telemetry_init());

@@ -12,7 +12,7 @@ extern "C" {
  * 
  * @return esp_err_t
  */
-esp_err_t sntp_init();
+esp_err_t sntp_init(void);
 
 #ifdef __cplusplus
 }
