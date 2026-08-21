@@ -11,4 +11,8 @@ config ESP_WIFI_PASSWORD
     default "mypassword"
     help
 	WiFi password (WPA or WPA2) for the example to use.
+	
+config HTTP_HOST
+	string "Remote host"
+	default "example.com"
 endmenu

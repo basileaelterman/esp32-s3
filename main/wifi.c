@@ -6,6 +6,8 @@
 #include "esp_wifi.h"
 #include "esp_event.h"
 #include "esp_log.h"
+#include "freertos/idf_additions.h"
+#include "portmacro.h"
 
 #define WIFI_SSID       CONFIG_ESP_WIFI_SSID
 #define WIFI_PASSWORD   CONFIG_ESP_WIFI_PASSWORD
@@ -102,4 +104,12 @@ void wifi_init_sta(void)
 	} else {
 		ESP_LOGE(TAG, "An unexpected error has occurred.");
 	}
+}
+
+void wifi_wait_for_connection(BaseType_t ticks_to_wait) {
+	xEventGroupWaitBits(s_wifi_event_group,
+						WIFI_CONNECTED_BIT,
+						pdFALSE,
+						pdTRUE,
+						ticks_to_wait);
 }

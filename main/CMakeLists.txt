@@ -2,7 +2,10 @@
 # for more information about component CMakeLists.txt files.
 
 idf_component_register(
-    SRCS "main.c" "wifi.c"
+    SRCS 
+    	"main.c" 
+    	"wifi.c"
+    	"telemetry.c"
     INCLUDE_DIRS "." "../include"
     PRIV_INCLUDE_DIRS
     REQUIRES
