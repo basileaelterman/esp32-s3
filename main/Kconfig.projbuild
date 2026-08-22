@@ -15,4 +15,8 @@ config ESP_WIFI_PASSWORD
 config HTTP_HOST
 	string "Remote host"
 	default "example.com"
+	
+config HTTP_PATH
+	string "URL path"
+	default "mypath"
 endmenu

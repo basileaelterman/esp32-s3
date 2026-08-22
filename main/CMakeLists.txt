@@ -4,15 +4,18 @@
 idf_component_register(
     SRCS 
     	"main.c" 
-    	"wifi.c"
+        "sntp.c"
     	"telemetry.c"
-    INCLUDE_DIRS "." "../include"
+        "wifi.c"
+    INCLUDE_DIRS 
+        "." 
+        "../include"
     PRIV_INCLUDE_DIRS
     REQUIRES
-        esp_wifi
         esp_event
-        esp_netif
-        nvs_flash
         esp_http_client
+        esp_netif
+        esp_wifi
+        nvs_flash
     PRIV_REQUIRES
 )
