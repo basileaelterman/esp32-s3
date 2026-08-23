@@ -1,4 +1,4 @@
-# ESP32 Telemetry
+# Eon Firmware
 
 An ESP32-S3 firmware application that sends component telemetry data to an API endpoint, built entirely in C.
 
@@ -21,4 +21,4 @@ This is a personal project in early development. The code reflects that: expect 
 
 ## License
 
-This code is licensed under the [MIT LICENSE](LICENSE).
+[PolyForm Noncommercial License 1.0.0](LICENSE). No commercial use.
